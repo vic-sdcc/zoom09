@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+    <composite:interface>
+
+    </composite:interface>
+    <composite:implementation>
+        <p:commandButton value="Submit"
+                         actionListener="#{createBean.submit}"
+                         update=":createForm"
+                         icon="ui-icon-disk"
+                         styleClass="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-arrow-1-w"
+                         style="margin-right: 7px">
+            <p:confirm header="Confirmation"
+                       message="are you sure you want to create this applicant record?"
+                       icon="ui-icon-alert"/>
+        </p:commandButton>
+        <p:commandButton value="Cancel"
+                         actionListener="#{createController.reset}"
+                         immediate="true"
+                         update=":createForm"
+                         icon="ui-icon-cancel"
+                         styleClass="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-arrow-1-w"
+                         style="margin-right: 7px">
+            <p:confirm header="Confirmation"
+                       message="are you sure you want to cancel the creation of this applicant record?"
+                       icon="ui-icon-alert"/>
+        </p:commandButton>
+    </composite:implementation>
+</html>

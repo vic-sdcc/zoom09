@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <composite:interface>
+        <composite:attribute name="applicant"/>
+        <composite:attribute name="applicantFilter"/>
+        <composite:attribute name="sortOrderString"/>
+    </composite:interface>
+    <composite:implementation>
+        <h:panelGroup id="prPanel" >
+            <h:form id="prForm">
+                <div style="overflow: auto; height: 570px">
+                    <p:panel id="applicantPanel" style="border: white; font-size: small;">
+                        <br/>
+                        <center>
+                            <p:outputLabel style="font-size: small; font-weight: bold;" value="San Dionisio Credit Cooperative"/><br/>
+                            <p:outputLabel style="font-size: small; font-weight: bold;" value="0554 Quirino Avenue, San Dionisio, Paranaque City"/><br/>
+                            <p:outputLabel style="font-size: small; font-weight: bold;" value="www.sandionisiocredit.coop"/><br/>
+                        </center>
+                        <br/>
+                        <br/>
+
+                        <p:outputLabel style="font-size:small; font-weight: bold;" value="Applicant Filtered List"/>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel style="font-size:small;" value="• #{returnObject.ouCode(cc.attrs.applicantFilter.ouCodeID).ouShortName}" rendered="#{not empty cc.attrs.applicantFilter.ouCodeID}"/>
+                            <p:outputLabel style="font-size:small;" value="&nbsp;" rendered="#{not empty cc.attrs.applicantFilter.ouCodeID}"/>
+
+                            <p:outputLabel style="font-size:small;" value="• #{cc.attrs.applicantFilter.applicationType}" rendered="#{not empty cc.attrs.applicantFilter.applicationType}"/>
+                            <p:outputLabel style="font-size:small;" value="&nbsp;" rendered="#{not empty cc.attrs.applicantFilter.applicationType}"/>
+
+                            <p:outputLabel style="font-size:small;" value="• #{dataConvert.genderConv(cc.attrs.applicantFilter.gender)}" rendered="#{not empty cc.attrs.applicantFilter.gender}"/>
+                            <p:outputLabel style="font-size:small;" value="&nbsp;" rendered="#{not empty cc.attrs.applicantFilter.gender}"/>
+
+                            <p:outputLabel style="font-size:small;" value="• #{dateFormat.formatDate(cc.attrs.applicantFilter.applicantDateFrom,'MMM dd YYYY')}" rendered="#{not empty cc.attrs.applicantFilter.applicantDateFrom}"/>
+                            <p:outputLabel style="font-size:small;" value="- #{dateFormat.formatDate(cc.attrs.applicantFilter.applicantDateTo,'MMM dd YYYY')}" rendered="#{not empty cc.attrs.applicantFilter.applicantDateTo}"/>
+
+                            <p:outputLabel style="font-size:small;" value="• All Applicants" rendered="#{empty cc.attrs.applicantFilter.ouCodeID 
+                                                                                                         and empty cc.attrs.applicantFilter.applicationType 
+                                                                                                         and empty cc.attrs.applicantFilter.applicantDateFrom}"/>
+                        </h:panelGrid>
+                        <h:panelGrid>
+                            <p:outputLabel style="font-size:small;" value="Sorted by: #{not empty cc.attrs.sortOrderString.orderByStr[0] and cc.attrs.sortOrderString.orderByStr[0] eq 'c.lastName, c.firstName, c.middleName' ? 'Alphabetical' : '' }
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[0] and cc.attrs.sortOrderString.orderByStr[0] eq 'c.applicationDate' ? 'Application Date' : '' }
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[0] and cc.attrs.sortOrderString.orderByStr[0] eq 'c.ouCode.ouCode' ? 'PT Number' : '' } 
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[1] and cc.attrs.sortOrderString.orderByStr[1] eq 'c.lastName, c.firstName, c.middleName' ? ', Alphabetical' : '' }
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[1] and cc.attrs.sortOrderString.orderByStr[1] eq 'c.applicationDate' ? ', Application Date' : '' }
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[1] and cc.attrs.sortOrderString.orderByStr[1] eq 'c.ouCode.ouCode' ? ', PT Number' : '' } 
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[2] and cc.attrs.sortOrderString.orderByStr[2] eq 'c.lastName, c.firstName, c.middleName' ? ', Alphabetical' : '' }
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[2] and cc.attrs.sortOrderString.orderByStr[2] eq 'c.applicationDate' ? ', Application Date' : '' }
+                                           #{not empty cc.attrs.sortOrderString.orderByStr[2] and cc.attrs.sortOrderString.orderByStr[2] eq 'c.ouCode.ouCode' ? ', PT Number' : '' }" 
+                                           rendered="#{not empty cc.attrs.sortOrderString.orderByStr[0] or 
+                                                       not empty cc.attrs.sortOrderString.orderByStr[1] or 
+                                                       not empty cc.attrs.sortOrderString.orderByStr[2]}"/>
+                        </h:panelGrid>
+                        <br/>
+                        <p:dataTable id="applicantList"
+                                     value="#{cc.attrs.applicant}" 
+                                     var="applicant">
+                            <p:column style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText style="font-size:small;" value="Application Date" />
+                                </f:facet>
+                                <h:outputText value="#{dateFormat.formatDate(applicant.applicationDate,'MMM dd YYYY')}" 
+                                              style="display:inline-block; font-size:small; "/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText style="font-size:small;" value="Full Name" />
+                                </f:facet>
+                                <h:outputText value="#{applicant.firstName} #{applicant.middleName} #{applicant.lastName}" 
+                                              style="display:inline-block; font-size:small;"/>
+                            </p:column>
+                            <p:column style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText style="font-size:small;" value="PT Number" />
+                                </f:facet>
+                                <h:outputText value="#{applicant.ouCode.ouShortName}" 
+                                              style="display:inline-block; font-size:small;"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <h:outputText value="Total: #{cc.attrs.applicant.size()} records #{returnObject.getPercentage(cc.attrs.applicant.size()/applicantCount.total)} of total applicant" 
+                                              style="display:inline-block; font-size:small;"/>
+                            </f:facet>
+                        </p:dataTable>
+                        <br/>
+                        <div style="page-break-before: auto; page-break-inside: avoid;">
+                            <p:panel id="footer" style="border: white">
+                                <h:panelGrid style="font-size: x-small; font-style: italic;" columns="2">
+                                    <p:outputLabel value="Date printed: "/>
+                                    <p:outputLabel value="#{currentDate}">
+                                        <f:convertDateTime pattern="MMM dd yyyy"/>
+                                    </p:outputLabel>                                
+                                </h:panelGrid>
+                                <h:panelGrid style="font-size: x-small; font-style: italic;" columns="2">
+                                    <p:outputLabel value="by: "/>
+                                    <p:outputLabel value="#{returnObject.memberUser(returnObject.liferayUser())}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </div>
+                    </p:panel>
+                </div>
+                <br/>
+                <p:commandButton value="PRINT"
+                                 icon="ui-icon-print"
+                                 styleClass="ui-btn ui-btn-icon-left ui-icon-arrow-1-w"
+                                 style="margin-right: 7px;">
+                    <p:printer target="applicantPanel"/>
+                </p:commandButton>
+                <p:commandButton value="CANCEL"
+                                 id="cancelBtn"
+                                 icon="ui-icon-cancel"
+                                 styleClass="ui-btn ui-btn-icon-left ui-icon-forbidden"
+                                 style="margin-right: 7px;"
+                                 immediate="true"
+                                 actionListener="#{updateController.mainViewApp}">
+                </p:commandButton>
+            </h:form>
+        </h:panelGroup>
+    </composite:implementation>
+</html>

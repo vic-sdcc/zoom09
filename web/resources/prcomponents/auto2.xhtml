@@ -1,0 +1,305 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+    <composite:interface>
+        <composite:attribute name="autoComplete"/>
+        <composite:attribute name="dataComp"/>
+        <composite:attribute name="applicant"/>
+        <composite:attribute name="converter"/>
+    </composite:interface>
+    <composite:implementation>
+        <p:panel id="autoPanel"
+                 style="border-color: white">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Applicant Type:"/>
+                </div>
+                <div class="ui-grid-col-3">
+                    <p:selectOneRadio value="#{applicantType.myType}">
+                        <f:selectItem itemLabel="REGULAR&nbsp;&nbsp;&nbsp;" 
+                                      itemValue="REGULAR"/>
+                        <f:selectItem itemLabel="ASSOCIATE&nbsp;&nbsp;&nbsp;"
+                                      itemValue="ASSOCIATE"/>
+                        <p:ajax update=":#{p:component('autoPanel')}" 
+                                listener="#{cc.attrs.dataComp.beanclear()}"/>
+                    </p:selectOneRadio>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Application Date:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="applicationDate"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].applicationDate}">
+                        <f:convertDateTime pattern="MMM dd yyyy"/>
+                    </p:outputLabel>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Last Name:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:autoComplete id="lastName"
+                                    label="Last Name"
+                                    value="#{cc.attrs.dataComp.lastName}" 
+                                    completeMethod="#{cc.attrs.autoComplete.completeLastName}"
+                                    emptyMessage="no records found."
+                                    queryDelay="500"
+                                    scrollHeight="200"
+                                    placeholder="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].lastName}"
+                                    onclick="this.select()"
+                                    disabled="#{empty applicantType.myType}">
+                        <p:ajax process="@this" 
+                                event="itemSelect" 
+                                update=":#{p:component('firstName')},:#{p:component('middleName')},:#{p:component('ouCode')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                update=":#{p:component('firstName')},:#{p:component('middleName')},:#{p:component('ouCode')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this"
+                                event="itemSelect" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                    </p:autoComplete>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="First Name:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:autoComplete id="firstName"
+                                    label="First Name"
+                                    value="#{cc.attrs.dataComp.firstName}" 
+                                    completeMethod="#{cc.attrs.autoComplete.completeFirstName}"
+                                    emptyMessage="no records found."
+                                    queryDelay="500"
+                                    scrollHeight="200"
+                                    placeholder="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].firstName}"
+                                    onclick="this.select()"
+                                    disabled="#{empty applicantType.myType}">
+                        <p:ajax process="@this" 
+                                event="itemSelect" 
+                                update=":#{p:component('lastName')},:#{p:component('middleName')},:#{p:component('ouCode')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                update=":#{p:component('lastName')},:#{p:component('middleName')},:#{p:component('ouCode')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this"
+                                event="itemSelect" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                    </p:autoComplete>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Middle Name:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:autoComplete id="middleName"
+                                    label="Middle Name"
+                                    value="#{cc.attrs.dataComp.middleName}" 
+                                    completeMethod="#{cc.attrs.autoComplete.completeMiddleName}"
+                                    emptyMessage="no records found."
+                                    queryDelay="500"
+                                    scrollHeight="200"
+                                    placeholder="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].middleName}"
+                                    onclick="this.select()"
+                                    disabled="#{empty applicantType.myType}">
+                        <p:ajax process="@this" 
+                                event="itemSelect" 
+                                update=":#{p:component('lastName')},:#{p:component('firstName')},:#{p:component('ouCode')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                update=":#{p:component('lastName')},:#{p:component('firstName')},:#{p:component('ouCode')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this" 
+                                event="itemSelect" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                    </p:autoComplete>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Birth Date:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="birthdate"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].birthdate}">
+                        <f:convertDateTime pattern="MMM dd yyyy"/>
+                    </p:outputLabel>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Gender:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="gender"
+                                   value="#{dataConvert.genderConv(cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].gender)}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Civil Status:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="civilStatus"
+                                   value="#{dataConvert.civilStatusConv(cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].civilStatus)}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Mobile No.:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="contactNumber"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].contactNumber}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Resident Since:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="residentSince"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].residentSince}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Education:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="education"
+                                   value="#{dataConvert.educConv(cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].education)}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Occupation:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="occupation"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].occupation}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Street:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="street"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].street}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="Barangay:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="barangay"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].barangay}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel value="City/Municipality:"/>
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:outputLabel id="cityMun"
+                                   value="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].cityMun}"/>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-3">
+                    <p:outputLabel for="ouCode" 
+                                   value="P.T. No.:"/> 
+                </div>
+                <div class="ui-grid-col-6">
+                    <p:autoComplete id="ouCode"
+                                    label="P.T. No.:"
+                                    value="#{cc.attrs.dataComp.ouCode}" 
+                                    completeMethod="#{cc.attrs.autoComplete.completeOuCode}"
+                                    emptyMessage="no records found."
+                                    queryDelay="500"
+                                    scrollHeight="200"
+                                    placeholder="#{cc.attrs.dataComp.appProfileList[cc.attrs.dataComp.indexList].ouCode.ouShortName}"
+                                    onclick="this.select()"
+                                    disabled="#{empty applicantType.myType}">
+                        <p:ajax process="@this" 
+                                event="itemSelect" 
+                                update=":#{p:component('lastName')},:#{p:component('firstName')},:#{p:component('middleName')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                update=":#{p:component('lastName')},:#{p:component('firstName')},:#{p:component('middleName')},buttonPanel,:#{p:component('applicationDate')},:#{p:component('birthdate')},:#{p:component('gender')},:#{p:component('civilStatus')},:#{p:component('contactNumber')},:#{p:component('residentSince')},:#{p:component('education')},:#{p:component('occupation')},:#{p:component('street')},:#{p:component('barangay')},:#{p:component('cityMun')}" 
+                                listener="#{cc.attrs.dataComp.applicantComplete()}"/>
+                        <p:ajax process="@this" 
+                                event="itemSelect" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                        <p:ajax process="@this" 
+                                event="keyup" 
+                                listener="#{cc.attrs.dataComp.setIndexList(0)}"/>
+                    </p:autoComplete>
+                </div>
+            </div>
+        </p:panel>
+        <p:separator/>
+        <p:panel id="buttonPanel"
+                 style="border-color: white">
+            <p:commandButton value="Select"
+                             id="confirmBtn"
+                             icon="ui-icon-check"
+                             immediate="true" 
+                             disabled="#{empty cc.attrs.dataComp.appProfileList}"
+                             style="margin-right: 7px;">
+                <p:ajax listener="#{updateController.load2}"/>
+                <!--<p:ajax listener="{cc.attrs.lsnr}"/><-->
+                <!--<p:ajax listener="{cc.attrs.nvgt}"/><-->
+            </p:commandButton>
+            <p:commandButton value="Cancel"
+                             id="cancelBtn"
+                             icon="ui-icon-cancel"
+                             disabled="#{empty cc.attrs.dataComp.appProfileList or cc.attrs.dataComp.appProfileList.size() eq 0}"
+                             style="margin-right: 7px;">
+                <p:ajax listener="#{cc.attrs.dataComp.beanclear()}" 
+                        update=":#{p:component('autoPanel')}, buttonPanel"/>
+            </p:commandButton>
+            <p:commandButton value="Previous"
+                             id="previousBtn"
+                             icon="ui-icon-arrowthick-1-w"
+                             disabled="#{empty cc.attrs.dataComp.appProfileList or cc.attrs.dataComp.appProfileList.size() eq 0 or (cc.attrs.dataComp.indexList eq 0)}"
+                             style="margin-right: 7px;">
+                <p:ajax listener="#{cc.attrs.dataComp.setIndexList(cc.attrs.dataComp.indexList - 1)}" 
+                        update=":#{p:component('autoPanel')}, buttonPanel"/>
+            </p:commandButton>
+            <p:commandButton value="Next"
+                             id="nextBtn"
+                             icon="ui-icon-arrowthick-1-e"
+                             iconPos="right"
+                             disabled="#{empty cc.attrs.dataComp.appProfileList or cc.attrs.dataComp.appProfileList.size() eq 0 or (cc.attrs.dataComp.indexList eq (cc.attrs.dataComp.appProfileList.size() - 1))}"
+                             style="margin-right: 7px;">
+                <p:ajax listener="#{cc.attrs.dataComp.setIndexList(cc.attrs.dataComp.indexList + 1)}" 
+                        update=":#{p:component('autoPanel')}, buttonPanel"/>
+            </p:commandButton>
+        </p:panel>
+    </composite:implementation>
+</html>
+

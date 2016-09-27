@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define id="mainContent" name="content">
+            <f:event type="preRenderView" 
+                     listener="#{checkUser.init}"/>
+            <h:form id="accessMessage" 
+                    rendered="#{not checkUser.showContent}">
+                <h:outputText value="You do not have the roles required to access this portlet."/>
+            </h:form>
+            <h:form id="mainForm" rendered="#{checkUser.showContent}">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" showHeader="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajax_load.gif"/>
+                </p:dialog>
+
+
+                <p:panel style="border: white" id="filterPanel">
+                    <div class="ui-grid ui-grid-responsive">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-6">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputLabel value="Filters" style="font-weight: bold"/>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputLabel value="PT Number: "/>
+                                    </div>
+                                    <div class="ui-grid-col-6">
+                                        <p:selectOneMenu style="min-width: 200px" value="#{applicantFilterData.ouCodeID}" 
+                                                         filterMatchMode="startsWith" 
+                                                         filter="true">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Select PT Number" itemValue=""/>
+                                            <f:selectItems value="#{returnObject.ouList()}" 
+                                                           var="ou" 
+                                                           itemLabel="#{ou.ouShortName}"
+                                                           itemValue="#{ou.ouCode}"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputLabel value="Application Type: "/>
+                                    </div>
+                                    <div class="ui-grid-col-6">
+                                        <p:selectOneMenu style="min-width: 200px" value="#{applicantFilterData.applicationType}">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Select Type" itemValue=""/>
+                                            <f:selectItem itemLabel="Regular" itemValue="Regular"/>
+                                            <f:selectItem itemLabel="Associate" itemValue="Associate"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputLabel value="Gender: "/>
+                                    </div>
+                                    <div class="ui-grid-col-6">
+                                        <p:selectOneMenu style="min-width: 200px" value="#{applicantFilterData.gender}">
+                                            <f:selectItem noSelectionOption="true" itemLabel="Select Type" itemValue=""/>
+                                            <f:selectItem itemLabel="Male" itemValue="M"/>
+                                            <f:selectItem itemLabel="Female" itemValue="F"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputLabel value="Application date: "/>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:calendar id="dateFrom" 
+                                                    value="#{applicantFilterData.applicantDateFrom}" 
+                                                    yearRange="#{1900}:#{currentDate}" 
+                                                    maxdate="#{currentDate}" 
+                                                    pattern="MMM dd yyyy"
+                                                    placeholder="From"
+                                                    onclick="this.select()"
+                                                    navigator="true">
+                                            <p:ajax event="dateSelect" update=":#{p:component('dateTo')}" listener="#{applicantFilterData.setApplicantDateTo(null)}"/>
+                                            <p:ajax event="keyup" update=":#{p:component('dateTo')}" listener="#{applicantFilterData.setApplicantDateTo(null)}"/>
+                                        </p:calendar>
+                                    </div>
+                                    <div class="ui-grid-col-6">
+                                        <p:calendar id="dateTo" 
+                                                    value="#{applicantFilterData.applicantDateTo}"
+                                                    yearRange="#{applicantFilterData.applicantDateFrom.year + 1900}:#{currentDate}"
+                                                    maxdate="#{currentDate}" 
+                                                    mindate="#{applicantFilterData.applicantDateFrom}"
+                                                    pattern="MMM dd yyyy"
+                                                    placeholder="To"
+                                                    onclick="this.select()"
+                                                    navigator="true"
+                                                    disabled="#{empty applicantFilterData.applicantDateFrom}">
+                                            <p:ajax event="dateSelect" update=":#{p:component('dateFrom')}"/>
+                                            <p:ajax event="keyup" update=":#{p:component('dateFrom')}"/>
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-col-6">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <p:outputLabel value="Sort By" style="font-weight: bold"/>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <h:panelGrid columns="2">
+                                            <p:selectBooleanCheckbox value="#{sortOrderString.alphabetical}">
+                                                <p:ajax listener="#{sortOrderString.alphabetical()}"/>
+                                            </p:selectBooleanCheckbox>
+
+                                            <p:outputLabel value="Alphabetical" style="margin-left: 7px"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <h:panelGrid columns="2">
+                                            <p:selectBooleanCheckbox value="#{sortOrderString.orgUnit}">
+                                                <p:ajax listener="#{sortOrderString.orgUnit()}"/>
+                                            </p:selectBooleanCheckbox>
+
+                                            <p:outputLabel value="PT Number" style="margin-left: 7px"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <h:panelGrid columns="2">
+                                            <p:selectBooleanCheckbox value="#{sortOrderString.applicantDate}">
+                                                <p:ajax listener="#{sortOrderString.applicantDate()}"/>
+                                            </p:selectBooleanCheckbox>
+
+                                            <p:outputLabel value="Applicant Date" style="margin-left: 7px"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-6">
+                                        <h:panelGrid id="countPnl" style="border-color: white;" columns="3">
+                                            <p:outputLabel value="Count" style="margin-right: 30px;"/>
+                                            <p:outputLabel value=": "/>
+                                            <p:outputLabel value="#{applicantData.applicantViewList.size()}"
+                                                           rendered="#{applicantData.applicantViewList.size() gt 0}"/>
+                                            <p:outputLabel value="0" rendered="#{applicantData.applicantViewList.size() lt 1}"/>
+
+                                            <p:outputLabel value="Percent Total"  style="margin-right: 30px;"/>
+                                            <p:outputLabel value=": "/>
+                                            <p:outputLabel value="#{((applicantData.applicantViewList.size())/applicantCount.total)}" 
+                                                           rendered="#{applicantData.applicantViewList.size() gt 0}">
+                                                <f:convertNumber pattern="##.##%"/>
+                                            </p:outputLabel>
+                                            <p:outputLabel value="0%" rendered="#{applicantData.applicantViewList.size() lt 1}"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p:panel>
+                <p:separator/>
+
+                <p:commandButton value="Proceed" 
+                                 icon="ui-icon-document"
+                                 styleClass="ui-btn ui-btn-icon-left ui-icon-document"
+                                 style="margin-right: 7px;"
+                                 update=":#{p:component('applicantViewList')}, :#{p:component('filterPanel')}, :#{p:component('prntApp')}">
+                    <f:actionListener binding="#{applicantData.setApplicantViewList(generateData.applicantList(applicantFilterData,sortOrderString))}"/>
+                    <f:actionListener binding="#{applicantCount.initVal()}"/>
+                </p:commandButton>
+                <p:commandButton value="Clear Filters" 
+                                 icon="ui-icon-document"
+                                 styleClass="ui-btn ui-btn-icon-left ui-icon-document"
+                                 style="margin-right: 7px;"
+                                 update=":#{p:component('filterPanel')}, :#{p:component('applicantViewList')}, :#{p:component('prntApp')}">
+                    <f:actionListener binding="#{applicantFilterData.beanclear()}"/>
+                    <f:actionListener binding="#{sortOrderString.beanclear()}"/>
+                    <f:actionListener binding="#{sortOrderString.beanclear2()}"/>
+                    <f:actionListener binding="#{applicantData.beanclear()}"/>
+                </p:commandButton>
+                <br/>
+                <br/>
+                <p:dataTable id="applicantViewList"
+                             value="#{applicantData.applicantViewList}" 
+                             var="applicant"
+                             scrollHeight="200"
+                             scrollRows="100"
+                             scrollable="true"
+                             liveScroll="true"
+                             rowIndexVar="rowIndex" 
+                             reflow="true">
+                    <p:column style="width: 30%">
+                        <f:facet name="header">
+                            <h:outputText value="Application Date" />
+                        </f:facet>
+                        <h:outputText value="#{dateFormat.formatDate(applicant.applicationDate,'MMM dd YYYY')}" 
+                                      style="display:inline-block"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Full Name" />
+                        </f:facet>
+                        <h:outputText value="#{applicant.firstName} #{applicant.middleName} #{applicant.lastName}" 
+                                      style="display:inline-block"/>
+                    </p:column>
+                    <p:column style="width: 20%">
+                        <f:facet name="header">
+                            <h:outputText value="PT Number" />
+                        </f:facet>
+                        <h:outputText value="#{applicant.ouCode.ouShortName}" 
+                                      style="display:inline-block"/>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p>
+                    <span>
+                        <p:commandButton id="prntApp" 
+                                         value="Print"
+                                         icon="ui-icon-print"
+                                         styleClass="ui-btn ui-btn-icon-left ui-icon-print"
+                                         style="margin-right: 7px;"
+                                         disabled="#{applicantData.applicantViewList.size() eq 0}"
+                                         immediate="true">
+                            <p:ajax listener="#{navigation.printMember()}"/>
+                        </p:commandButton>
+                    </span>
+                </p>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

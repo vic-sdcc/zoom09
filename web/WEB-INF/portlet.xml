@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<portlet-app xmlns='http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd' version='2.0'>
+    <portlet>
+        <description>Create Applicant Record</description>
+        <portlet-name>Create Applicant Record</portlet-name>
+        <display-name>Create Applicant Record</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <!--
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/welcome.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/xhtml/main.xhtml</value>
+        </init-param>
+        <-->
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/create.xhtml</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <!--<portlet-mode>edit</portlet-mode><-->
+        </supports>
+        <portlet-info>
+            <title>Create Applicant Record</title>
+            <short-title>Create Applicant Record</short-title>
+            <keywords>Create Applicant Record</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+    </portlet>
+    <portlet>
+        <description>Update Applicant Record</description>
+        <portlet-name>Update Applicant Record</portlet-name>
+        <display-name>Update Applicant Record</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <!--
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/welcome.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/xhtml/main.xhtml</value>
+        </init-param>
+        <-->
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/update.xhtml</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <!--<portlet-mode>edit</portlet-mode><-->
+        </supports>
+        <portlet-info>
+            <title>Update Applicant Record</title>
+            <short-title>Update Applicant Record</short-title>
+            <keywords>Update Applicant Record</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+    </portlet>
+    <portlet>
+        <description>View Single Applicant Record</description>
+        <portlet-name>View Single Applicant Record</portlet-name>
+        <display-name>View Single Applicant Record</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <!--
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/welcome.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/xhtml/main.xhtml</value>
+        </init-param>
+        <-->
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/view.xhtml</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <!--<portlet-mode>edit</portlet-mode><-->
+        </supports>
+        <portlet-info>
+            <title>View Single Applicant Record</title>
+            <short-title>View Single Applicant Record</short-title>
+            <keywords>View Single Applicant Record</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+    </portlet>
+    <portlet>
+        <description>View Multiple Applicant Record</description>
+        <portlet-name>View Multiple Applicant Record</portlet-name>
+        <display-name>View Multiple Applicant Record</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <!--
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/welcome.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.edit</name>
+            <value>/xhtml/main.xhtml</value>
+        </init-param>
+        <-->
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/xhtml/viewMultiple.xhtml</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <!--<portlet-mode>edit</portlet-mode><-->
+        </supports>
+        <portlet-info>
+            <title>View Multiple Applicant Record</title>
+            <short-title>View Multiple Applicant Record</short-title>
+            <keywords>View Multiple Applicant Record</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+    </portlet>
+</portlet-app>

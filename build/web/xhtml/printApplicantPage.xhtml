@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:prcc="http://java.sun.com/jsf/composite/prcomponents"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define id="mainContent" name="content">
+            <h:form id="mainForm">
+                <h:panelGroup id="applicantPanel" >
+                    <p:panel id="fullPrint" style="border: white; font-size: small;">
+                        <div style="margin: 0% auto; min-width: 100%;">
+                            <div style="margin: 0% auto; 
+                                 position: relative; 
+                                 width: 100%;
+                                 font-size: small;">
+                                <br/>
+                                <br/>
+                                <center>
+                                    <p:outputLabel style="font-size: small;" value="San Dionisio Credit Cooperative"/><br/>
+                                    <p:outputLabel style="font-size: small;" value="0554 Quirino Avenue, San Dionisio, Paranaque City"/><br/>
+                                    <p:outputLabel style="font-size: small;" value="www.sandionisiocredit.coop"/><br/>
+                                    <br/><br/>
+                                    <p:outputLabel value="APPLICANT INFORMATION" style="font-weight: bold;"/>
+                                </center>
+                                <br/>
+                                <p:panel id="personalPanel" style="border: white">
+                                    <h:panelGrid style="font-size: small;" columns="2">
+                                        <p:outputLabel value="Applicant Type" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.applicantType}"/>
+
+                                        <p:outputLabel value="Application Date" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{dateFormat.formatDate(applicantData.applicant.applicationDate,'MMM dd YYYY')}"/>
+
+                                        <p:outputLabel value="Last Name" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.lastName}"/>
+
+                                        <p:outputLabel value="First Name" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.firstName}"/>
+
+                                        <p:outputLabel value="Middle name" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.middleName}"/>
+
+                                        <p:outputLabel value="Birth Date" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{dateFormat.formatDate(applicantData.applicant.birthdate,'MMM dd YYYY')}"/>
+
+                                        <p:outputLabel value="Gender" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{dataConvert.genderConv(applicantData.applicant.gender)}"/>
+
+                                        <p:outputLabel value="Civil Status" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{dataConvert.civilStatusConv(applicantData.applicant.civilStatus)}"/>
+
+                                        <p:outputLabel value="Contact Number" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.contactNumber}"/>
+
+                                        <p:outputLabel value="Residence Since" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.residentSince}"/>
+
+                                        <p:outputLabel value="Education" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{dataConvert.educConv(applicantData.applicant.education)}"/>
+
+                                        <p:outputLabel value="Occupation" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.occupation}"/>
+
+                                        <p:outputLabel value="Street Name" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.street}"/>
+
+                                        <p:outputLabel value="Barangay" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.barangay}"/>
+
+                                        <p:outputLabel value="City/Municipality" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.cityMun}"/>
+
+                                        <p:outputLabel value="PT Number" style="font-weight: bold; margin-right: 30px;"/>
+                                        <p:outputLabel value=": #{applicantData.applicant.ouCode.ouShortName}"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                                <br/>
+                                <div style="page-break-before: auto; page-break-inside: avoid;">
+                                    <p:panel id="footer" style="border: white">
+                                        <h:panelGrid style="font-size: x-small; font-style: italic;" columns="2">
+                                            <p:outputLabel value="Date printed: "/>
+                                            <p:outputLabel value="#{currentDate}">
+                                                <f:convertDateTime pattern="MMM dd yyyy"/>
+                                            </p:outputLabel>                                
+                                        </h:panelGrid>
+                                        <h:panelGrid style="font-size: x-small; font-style: italic;" columns="2">
+                                            <p:outputLabel value="by: "/>
+                                            <p:outputLabel value="#{returnObject.memberUser(returnObject.liferayUser())}"/>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                </div>
+                            </div>
+                        </div>
+                    </p:panel>
+                </h:panelGroup>
+
+                <p:commandButton value="Print"
+                                 icon="ui-icon-print"
+                                 styleClass="ui-btn ui-btn-icon-left ui-icon-print"
+                                 style="margin-right: 7px;">
+                    <p:printer target=":mainForm:applicantPanel"/>
+                </p:commandButton>
+                <p:commandButton value="Cancel"
+                                 id="cancelBtnR"
+                                 icon="ui-icon-cancel"
+                                 styleClass="ui-btn ui-btn-icon-left ui-icon-forbidden"
+                                 style="margin-right: 7px;">
+                    <p:ajax listener="#{navigation.viewPage()}" disabled="#{empty applicantData.applicant.applicantNo}"/>
+                </p:commandButton>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
